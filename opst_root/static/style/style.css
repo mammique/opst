@@ -1,0 +1,163 @@
+body {
+    width: 950px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 15px;
+}
+
+body,
+div {
+/*    border: 1px solid black; */
+}
+
+h1,h2,h3,h4,h5,h6,#menu {
+    font-family: geomedium;
+    font-weight: bold;
+}
+
+a {
+    text-decoration: none;
+    color: #ef4123;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul {
+    margin: 0 0 0 20px;
+}
+
+input[type="text"],
+input[type="password"] {
+    border-width: 0;
+    background-color: white;
+    padding: 3px 4px;
+}
+
+#home {
+    display: block;
+    height: 84px;
+    background: transparent url(/static/style/logo_home.png) no-repeat center left;
+}
+
+#main {
+    padding: 10px 0;
+    min-height: 400px;
+}
+
+#menu {
+    background-color: #a9a3a1;
+    text-align: right;
+    font-size: 110%;
+    color: white;
+}
+
+#menu,
+#menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#menu li {
+    display: inline-block;
+    padding: 2px 6px;
+    border-left: 10px solid white;
+    margin-left: -3px;
+}
+
+#menu a {
+    color: inherit;
+}
+
+#menu a:hover {
+    text-decoration: none;
+}
+
+#menu li.selected,
+#menu li:hover {
+    background-color: #ef4123;
+}
+
+#col-left > *,
+#col-right > *,
+#footer {
+    background-color: #e7e4e3;
+}
+
+#col-left > *,
+#col-right > * {
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+#col-left > * {
+    margin-right: 10px;
+}
+
+#col-right > * {
+    margin-left: 10px;
+}
+
+#col-left > *:last-child {
+    margin-bottom: 0;
+}
+
+#col-left h1,
+#col-right h1 {
+    color: #6a6361;
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+#cloud {
+    text-align: center;
+}
+
+#cloud a {
+    color: #a9a3a1;
+}
+
+#search-box input[type="text"] {
+    width: 126px;
+}
+
+#search-box input[type="submit"] {
+    color: transparent;
+    width: 21px;
+    height: 21px;
+    background-image: url(/static/style/disk_21_a9a3a1.png);
+    background-color: transparent;
+    border-width: 0;
+}
+
+#une {
+    border: 10px solid #ef4123;
+    margin-bottom: 10px;
+    padding: 5px 10px 10px 10px;
+}
+
+#une h1 {
+    background-color: #ef4123;
+    color: white;
+    display: inline-block;
+    padding: 7px 13px;
+    margin-top: -10px;
+    margin-left: -20px;
+}
+
+#carousel {
+    border: 10px solid #a9a3a1;
+    padding: 10px;
+}
+
+#footer {
+    padding: 7px;
+    text-align: center;
+    font-size: 85%;
+}
+
+#footer a {
+    margin: 0 10px;
+}

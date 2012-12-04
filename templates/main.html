@@ -1,0 +1,41 @@
+{% load cms_tags sekizai_tags menu_tags %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>OPST - {{ request.current_page.get_title }}</title>
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}/style/logo_128.png" />
+    {% render_block "css" %}
+{% addtoblock "css" %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/style/yui3-fonts-reset-grids-base-combo-min.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/style/style.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/style/stylesheet.css" media="all" />
+{% endaddtoblock %}
+</head>
+
+<body>
+
+    {% cms_toolbar %}
+    {% render_block "js" %}
+    
+<div id="header">
+    <a id="home" href="/"></a>
+</div>
+
+<ul id="menu">
+    {% show_menu 0 0 %}
+</ul>
+
+<div id="main">
+{% block main %}{% endblock %}
+</div>
+
+<div id="footer">
+    <a href="">Mentions légales</a>
+    <a href="">Plan du site</a>
+    <a href="">Contact</a>
+</div>
+
+</body>
+</html>

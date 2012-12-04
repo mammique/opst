@@ -1,0 +1,54 @@
+{% extends "main.html" %}
+
+{% load cms_tags %}
+
+{% block main %}
+
+<div class="yui3-g">
+
+    <div id="col-left" class="yui3-u-1-5">
+        <div id="cloud">
+            <a href="" style="font-size: 100%;">duis</a>
+            <a href="" style="font-size: 190%;">volutpat</a>
+            <a href="" style="font-size: 160%;">nunc</a>
+            <a href="" style="font-size: 220%;">magna</a>
+            <a href="" style="font-size: 160%;">venenatis</a>
+            <a href="" style="font-size: 150%;">luctus</a>
+            <a href="" style="font-size: 280%;">odio</a>
+            <a href="" style="font-size: 150%;">viverra</a>
+        </div>
+        <div id="search-box">
+            <input type="text" />
+            <input type="submit" />
+        </div>
+        <div id="partners">
+            <h1>Partenaires</h1>
+            <ul>
+                <li><a href="">Aenean velit lacus</a></li>
+                <li><a href="">Donec semper</a></li>
+                <li><a href="">Aenean vel sem</a></li>
+                <li><a href="">Praesent ullamcorper</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="yui3-u-3-5">
+        <div id="une">{% placeholder "page" %}</div>
+        <div style="padding: 30px 10px;" id="carousel">
+            <img src="{{ STATIC_URL }}/style/left_disc.png" />
+            <img style="margin-left: 478px;" src="{{ STATIC_URL }}/style/right_disc.png" />
+        </div>
+    </div>
+
+    <div id="col-right" class="yui3-u-1-5">
+        <div>
+            <h1>Actu</h1>
+            <p>Morbi nibh elit, blandit eget malesuada feugiat</p>
+            <p>Phasellus eget neque vel est ultricies dapibus at vitae sem</p>
+            <p>Pellentesque leo erat, eleifend pretium adipiscing nec</p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
