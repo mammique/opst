@@ -97,11 +97,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'cms.context_processors.media',
     'sekizai.context_processors.sekizai',
+#    'opst_root.contexts.tagcloud'
 )
 
 CMS_TEMPLATES = (
     ('page.html', 'Page'),
     ('home.html', 'Home'),
+    ('sitemap.html', 'Sitemap'),
 )
 
 #CMS_LANGUAGES = {
@@ -149,5 +151,9 @@ INSTALLED_APPS = (
     'cms.plugins.snippet',
     'cms.plugins.googlemap',
     'sekizai',
+    'tagging',
+    'pagetags',
+#    'cmsplugin_htmlsitemap',
     'opst_root',
+    'opst_plugins',
 )
