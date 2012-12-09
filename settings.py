@@ -103,7 +103,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 CMS_TEMPLATES = (
     ('page.html', 'Page'),
     ('home.html', 'Home'),
-    ('sitemap.html', 'Sitemap'),
+#    ('sitemap.html', 'Sitemap'),
 )
 
 #CMS_LANGUAGES = {
@@ -150,10 +150,20 @@ INSTALLED_APPS = (
     'cms.plugins.file',
     'cms.plugins.snippet',
     'cms.plugins.googlemap',
+    'cms.plugins.inherit',
+    'cms.plugins.teaser',
     'sekizai',
     'tagging',
     'pagetags',
 #    'cmsplugin_htmlsitemap',
     'opst_root',
     'opst_plugins',
+#    'haystack',
+#    'cms_search',
 )
+
+#HAYSTACK_CONNECTIONS = {
+#    'default': {
+#        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+#    },
+#}

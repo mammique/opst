@@ -147,9 +147,27 @@ input[type="password"] {
     margin-left: -20px;
 }
 
+#une #focus_body {
+    max-height: 220px;
+    overflow: hidden;
+}
+
+#une #focus_link {
+    display: block;
+    background-color: #ef4123;
+    color: white;
+    margin: 0 -10px -20px -20px;
+    text-align: right;
+    font-weight: bold;
+}
+
 #carousel {
     border: 10px solid #a9a3a1;
     padding: 10px;
+}
+
+#search-result {
+    padding-left: 15px;
 }
 
 #footer {
@@ -160,4 +178,13 @@ input[type="password"] {
 
 #footer a {
     margin: 0 10px;
+}
+
+.align-left {
+    float: right;
+    margin-left: 10px;
+}
+.align-left {
+    float: left;
+    margin-right: 10px;
 }

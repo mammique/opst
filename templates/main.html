@@ -1,4 +1,4 @@
-{% load cms_tags sekizai_tags menu_tags %}
+{% load cms_tags sekizai_tags menu_tags page_tags %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -28,13 +28,14 @@
 </ul>
 
 <div id="main">
-{% block main %}{% endblock %}
+    {% block main %}{% endblock %}
 </div>
 
 <div id="footer">
-    <a href="/legal/">Mentions légales</a>
-    <a href="/sitemap/">Plan du site</a>
-    <a href="/contact/">Contact</a>
+{% pages_with_tags 'footer' order alphabetical as page_list %}
+{% for p in page_list %}
+    <a href="{{ p.get_absolute_url }}">{{ p.get_title }}</a>
+{% endfor %}
 </div>
 
 </body>
