@@ -102,8 +102,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 CMS_TEMPLATES = (
     ('page.html', 'Page'),
+    ('page-full.html', 'Page Full'),
     ('home.html', 'Home'),
-#    ('sitemap.html', 'Sitemap'),
 )
 
 #CMS_LANGUAGES = {

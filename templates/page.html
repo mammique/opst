@@ -7,12 +7,8 @@
 <div class="yui3-g">
 
     <div id="col-left" class="yui3-u-1-5">
-        <div>
-            {% show_breadcrumb 1 "breadcrumbs.html" %}
-        </div>
-        <div>
-            <ul>{% show_sub_menu 1 %}</ul>
-        </div>
+{% show_breadcrumb 1 "breadcrumbs.html" %}
+<ul id="page-children">{% show_sub_menu 1 %}</ul>
 {% placeholder "left" %}
     </div>
 

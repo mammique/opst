@@ -10,7 +10,7 @@ div {
 /*    border: 1px solid black; */
 }
 
-h1,h2,h3,h4,h5,h6,#menu {
+h1,h2,h3,h4,h5,h6,#menu,#breadcrumbs,#page-children {
     font-family: geomedium;
     font-weight: bold;
 }
@@ -26,6 +26,14 @@ a:hover {
 
 ul {
     margin: 0 0 0 20px;
+}
+
+li {
+    list-style-type: square;
+}
+
+#cms_placeholder-overlay li {
+    list-style: none;
 }
 
 input[type="text"],
@@ -76,7 +84,8 @@ input[type="password"] {
 }
 
 #menu li.selected,
-#menu li:hover {
+#menu li:hover,
+#menu li.ancestor {
     background-color: #ef4123;
 }
 
@@ -110,6 +119,12 @@ input[type="password"] {
     margin: 0;
     padding-bottom: 5px;
 }
+
+/* #col-left > *:empty,
+#col-right > *:empty {
+    display: none;
+} */
+
 
 #cloud {
     text-align: center;
@@ -161,10 +176,46 @@ input[type="password"] {
     font-weight: bold;
 }
 
-#carousel {
+.carouslide {
     border: 10px solid #a9a3a1;
     padding: 10px;
 }
+
+.carouslide > * {
+    height: 100px;
+    display: inline-block;
+}
+
+.carouslide-left,
+.carouslide-right {
+    width: 24px;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.carouslide-left {
+    background-image: url(/static/style/left_disc.png);
+}
+
+.carouslide-right {
+    background-image: url(/static/style/right_disc.png);
+}
+
+.carouslide-content {
+    width: 474px;
+/*    overflow: hidden;
+}
+
+.carouslide-content > * {
+    width: inherit;
+    height: inherit;
+    overflow: hidden;
+}
+
+.carouslide-content > * > h1 {
+    padding: 0;
+    margin: 0; */
+} 
 
 #search-result {
     padding-left: 15px;
@@ -180,11 +231,52 @@ input[type="password"] {
     margin: 0 10px;
 }
 
+.plugin-picture {
+}
+
 .align-left {
     float: right;
-    margin-left: 10px;
+    margin: 0 0 0 10px;
 }
+
 .align-left {
     float: left;
-    margin-right: 10px;
+    margin: 0 10px 0 0;
 }
+
+.newsfeed li {
+    margin: 0 !important:
+    padding: 0 !important;
+    list-style-type: none;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.newsfeed li:last-of-type {
+    margin-bottom: 0;
+}
+
+.newsfeed a {
+    color: inherit;
+}
+
+.newsfeed ul {
+    margin: 0;
+    padding: 0 !important;
+}
+
+#breadcrumbs, #page-children {
+    margin-left: 0;
+}
+
+#breadcrumbs li, #page-children li {
+    margin-left: 17px;
+}
+
+/* #page-children:empty {
+    display: none;
+}
+
+#breadcrumbs li, #page-children li {
+    list-style: none;
+} */
