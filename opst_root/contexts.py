@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 
-def tagcloud(request):
+#def tagcloud(request):
 
-    """
-    """
+#    """
+#    """
 
-    return {'tagcloud': [1, 2, 3]}
+#    return {'tagcloud': [1, 2, 3]}
 
 # >>> t=tagging.models.Tag.objects.all()[11]
 # >>> t.items.all().count()

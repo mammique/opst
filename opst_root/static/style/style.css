@@ -32,6 +32,10 @@ li {
     list-style-type: square;
 }
 
+.button:hover {
+    cursor: pointer;
+}
+
 #cms_placeholder-overlay li {
     list-style: none;
 }
@@ -202,20 +206,52 @@ input[type="password"] {
 }
 
 .carouslide-content {
-    width: 474px;
-/*    overflow: hidden;
+    width: 454px;
+    padding: 0 10px;
+    overflow: hidden;
 }
 
 .carouslide-content > * {
+    position: absolute;
     width: inherit;
     height: inherit;
     overflow: hidden;
+    background-color: white;
+}
+
+.carouslide-blur {
+    display: none;
+}
+
+.carouslide-focus,
+.carouslide-focusing {
+    display: block;
+}
+
+.carouslide-focus {
+    z-index: 1;
+}
+
+.carouslide-focusing {
+    z-index: 0;
 }
 
 .carouslide-content > * > h1 {
     padding: 0;
-    margin: 0; */
-} 
+    margin: 0;
+}
+
+.carouslide-content > * img {
+    max-height: 72px;
+}
+
+/* .carouslide-content a {
+    color: black;
+}
+
+.carouslide-content a:hover {
+    text-decoration: none;
+} */
 
 #search-result {
     padding-left: 15px;

@@ -171,9 +171,9 @@ class CarouslideRecentPagesPlugin(CMSPluginBase): #InheritPagePlaceholderPlugin)
         page = instance.placeholder.page
         divs = []
 
-        for from_page in Page.objects.all()[4:6]:
+        from_pages = Page.objects.published().exclude(pk=page.pk).order_by('-publication_date')[0:5]
 
-            if from_page == page: continue
+        for from_page in from_pages:
 
             if page.publisher_is_draft:
                 from_page = from_page.get_draft_object()
@@ -196,9 +196,15 @@ class CarouslideRecentPagesPlugin(CMSPluginBase): #InheritPagePlaceholderPlugin)
                     continue
                 outstr = inst.render_plugin(tmpctx, placeholder)
                 plugin_output.append(outstr)
-            divs.append(''.join(plugin_output))
-        template_vars['carouslide_content'] = mark_safe('<div>%s</div>' % \
-            '</div><div>'.join(divs))
+            if from_page == from_pages[0]:
+                el_attrs = 'class="button carouslide-focus"'
+            else:
+                el_attrs = 'class="button carouslide-blur"'
+            divs.append('<div onclick="document.location=\'%s\'" %s>%s</div>' % \
+                (from_page.get_absolute_url(), el_attrs, ''.join(plugin_output)))
+#        template_vars['carouslide_content'] = mark_safe('<div>%s</div>' % \
+#            '</div><div>'.join(divs))
+        template_vars['carouslide_content'] = mark_safe(''.join(divs))
         context.update(template_vars)
         context.update({'instance': instance})
         return context
