@@ -25,7 +25,7 @@ re_blanks = re.compile('\s+')
 
 class TagCloudPlugin(CMSPluginBase):
 
-#    model = SearchBoxPluginModel
+    model = SearchBoxPluginModel
     name = _("Tag Cloud")
     render_template = "cms_plugins/tagcloud.html"
 
