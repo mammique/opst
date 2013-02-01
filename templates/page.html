@@ -8,13 +8,17 @@
 
     <div id="col-left" class="yui3-u-1-5">
 {% show_breadcrumb 1 "breadcrumbs.html" %}
-<ul id="page-children">{% show_sub_menu 1 %}</ul>
+{% if children.count %}<ul id="page-children">{% show_sub_menu 1 "page-children.html" %}</ul>{% endif %}
 {% placeholder "left" %}
     </div>
 
-    <div class="yui3-u-4-5">
+    <div class="yui3-u-3-5">
         <h1>{{ request.current_page.get_title }}</h1>
 {% placeholder "page" %}
+    </div>
+
+    <div id="col-right" class="yui3-u-1-5">
+        {% placeholder "right" %}
     </div>
 
 </div>

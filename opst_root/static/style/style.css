@@ -1,8 +1,17 @@
+html {
+    background-color: black;
+    height: 100%;
+}
+
 body {
-    width: 950px;
+    width: 80%;
+    min-height: 100%;
+    min-width: 950px;
     margin-right: auto;
     margin-left: auto;
-    margin-top: 15px;
+/*    margin-top: 15px; */
+    background-color: white;
+    padding: 0 20px;
 }
 
 body,
@@ -36,6 +45,10 @@ li {
     cursor: pointer;
 }
 
+#header {
+    padding-top: 10px;
+}
+
 #cms_placeholder-overlay li {
     list-style: none;
 }
@@ -54,7 +67,7 @@ input[type="password"] {
 }
 
 #main {
-    padding: 10px 0;
+    padding: 16px 0;
     min-height: 400px;
 }
 
@@ -106,11 +119,11 @@ input[type="password"] {
 }
 
 #col-left > * {
-    margin-right: 10px;
+    margin-right: 16px;
 }
 
 #col-right > * {
-    margin-left: 10px;
+    margin-left: 16px;
 }
 
 #col-left > *:last-child {
@@ -139,15 +152,14 @@ input[type="password"] {
 }
 
 #search-box input[type="text"] {
-    width: 126px;
+    width: 76%;
 }
 
 #search-box input[type="submit"] {
     color: transparent;
-    width: 21px;
+    width: 14%;
     height: 21px;
-    background-image: url(/static/style/disk_21_a9a3a1.png);
-    background-color: transparent;
+    background: transparent url(/static/style/disk_21_a9a3a1.png) center center no-repeat;
     border-width: 0;
 }
 
@@ -164,6 +176,7 @@ input[type="password"] {
     padding: 7px 13px;
     margin-top: -10px;
     margin-left: -20px;
+    margin-bottom: 10px;
 }
 
 #une #focus_body {
@@ -183,15 +196,18 @@ input[type="password"] {
 .carouslide {
     border: 10px solid #a9a3a1;
     padding: 10px;
+    text-align: center;
 }
 
 .carouslide > * {
     height: 100px;
     display: inline-block;
+    text-align: left;
 }
 
 .carouslide-left,
 .carouslide-right {
+/*    width 10%; */
     width: 24px;
     background-repeat: no-repeat;
     background-position: center center;
@@ -206,6 +222,7 @@ input[type="password"] {
 }
 
 .carouslide-content {
+/*    width: 80%; */
     width: 454px;
     padding: 0 10px;
     overflow: hidden;
