@@ -16,7 +16,7 @@ from cms.models import Title, Page
 from cms.utils import get_language_from_request
 from cms.utils.moderator import get_cmsplugin_queryset
 
-from .models import SearchBoxPluginModel, NewsFeedPluginModel, NewsFeedEntry
+from .models import SearchBoxPluginModel, NewsFeedPluginModel, NewsFeedExtPluginModel
 from .forms import SearchBoxForm
 
 
@@ -147,6 +147,27 @@ class NewsFeedPlugin(CMSPluginBase):
         return context
 
 plugin_pool.register_plugin(NewsFeedPlugin)
+
+
+class NewsFeedExtPlugin(CMSPluginBase):
+
+    model = NewsFeedExtPluginModel
+    render_template = "cms_plugins/newsfeedext.html"
+    name = _("News Feed External")
+    filter_horizontal = ('news',)
+
+    def render(self, context, instance, placeholder):
+
+        import feedparser
+
+        context.update({
+            'newsfeedext': feedparser.parse(instance.url)['entries'][0:instance.list_max],
+            'instance': instance})
+
+        return context
+
+
+plugin_pool.register_plugin(NewsFeedExtPlugin)
 
 
 class CarouslideRecentPagesPlugin(CMSPluginBase): #InheritPagePlaceholderPlugin):

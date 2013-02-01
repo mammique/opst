@@ -8,8 +8,7 @@
 
     <div id="col-left" class="yui3-u-1-5">
 {% show_breadcrumb 1 "breadcrumbs.html" %}
-{% if children.count %}<ul id="page-children">{% show_sub_menu 1 "page-children.html" %}</ul>{% endif %}
-{% placeholder "left" %}
+{% if request.current_page.children.count %}<ul id="page-children">{% show_sub_menu 1 %}</ul>{% endif %}
     </div>
 
     <div class="yui3-u-3-5">

@@ -22,3 +22,11 @@ class NewsFeedPluginModel(CMSPlugin):
     title    = models.CharField(max_length=128)
     list_max = models.PositiveIntegerField(default=8)
     news     = models.ManyToManyField(NewsFeedEntry)
+
+
+class NewsFeedExtPluginModel(CMSPlugin):
+
+    title    = models.CharField(max_length=128)
+    list_max = models.PositiveIntegerField(default=8)
+    url      = models.URLField(max_length=1024)
+
