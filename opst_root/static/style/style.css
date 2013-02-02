@@ -19,7 +19,7 @@ div {
 /*    border: 1px solid black; */
 }
 
-h1,h2,h3,h4,h5,h6,#menu,#breadcrumbs,#page-children {
+h1,h2,h3,h4,h5,h6,#menu,#breadcrumbs,#page-children,#branchmap {
     font-family: geomedium;
     font-weight: bold;
 }
@@ -39,6 +39,10 @@ ul {
 
 li {
     list-style-type: square;
+}
+
+.yui3-u-3-5 {
+    text-align: justify;
 }
 
 .button:hover {
@@ -104,6 +108,18 @@ input[type="password"] {
 #menu li:hover,
 #menu li.ancestor {
     background-color: #ef4123;
+}
+
+#branchmap {
+    font-size: 130%;
+}
+
+#branchmap > li > ul > li {
+    font-size: 90%;
+}
+
+#branchmap > li > ul > li > ul > li {
+    font-size: 90%;
 }
 
 #col-left > *,

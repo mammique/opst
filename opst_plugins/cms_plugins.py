@@ -100,6 +100,19 @@ class SitemapPlugin(CMSPluginBase):
 plugin_pool.register_plugin(SitemapPlugin)
 
 
+class BranchMapPlugin(CMSPluginBase):
+
+    model = CMSPluginModel
+    name = _("Branch map")
+    render_template = "cms_plugins/branchmap.html"
+
+    def render(self, context, instance, placeholder):
+
+        return context
+
+plugin_pool.register_plugin(BranchMapPlugin)
+
+
 #class ChildPagesPlugin(CMSPluginBase):
 
 #    model = CMSPluginModel
