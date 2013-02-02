@@ -160,9 +160,11 @@ class NewsFeedExtPlugin(CMSPluginBase):
 
         import feedparser
 
-        context.update({
-            'newsfeedext': feedparser.parse(instance.url)['entries'][0:instance.list_max],
-            'instance': instance})
+        try: 
+            context.update({
+                'newsfeedext': feedparser.parse(instance.url)['entries'][0:instance.list_max],
+                'instance': instance})
+        except: pass
 
         return context
 
