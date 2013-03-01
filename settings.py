@@ -102,6 +102,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 CMS_TEMPLATES = (
     ('page.html', 'Page'),
+    ('page-left.html', 'Page Left'),
     ('page-full.html', 'Page Full'),
     ('home.html', 'Home'),
 )
