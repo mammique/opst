@@ -45,6 +45,14 @@ li {
     text-align: justify;
 }
 
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
 .button:hover {
     cursor: pointer;
 }
