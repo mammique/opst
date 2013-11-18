@@ -3,10 +3,15 @@ from django.db import models
 from cms.models import CMSPlugin
 
 
+class TagCloudPluginModel(CMSPlugin):
+
+    result_page = models.ForeignKey('cms.Page', related_name='opst_plugin_tagcloud')
+    items_min = models.PositiveIntegerField(default=3)
+
+
 class SearchBoxPluginModel(CMSPlugin):
 
     result_page = models.ForeignKey('cms.Page', related_name='opst_plugin_searchbox')
-
 
 class NewsFeedEntry(models.Model):
 
@@ -29,4 +34,3 @@ class NewsFeedExtPluginModel(CMSPlugin):
     title    = models.CharField(max_length=128)
     list_max = models.PositiveIntegerField(default=8)
     url      = models.URLField(max_length=1024)
-

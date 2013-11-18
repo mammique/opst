@@ -16,7 +16,7 @@ from cms.models import Title, Page
 from cms.utils import get_language_from_request
 from cms.utils.moderator import get_cmsplugin_queryset
 
-from .models import SearchBoxPluginModel, NewsFeedPluginModel, NewsFeedExtPluginModel
+from .models import TagCloudPluginModel, SearchBoxPluginModel, NewsFeedPluginModel, NewsFeedExtPluginModel
 from .forms import SearchBoxForm
 
 
@@ -25,15 +25,19 @@ re_blanks = re.compile('\s+')
 
 class TagCloudPlugin(CMSPluginBase):
 
-    model = SearchBoxPluginModel
+    model = TagCloudPluginModel
     name = _("Tag Cloud")
     render_template = "cms_plugins/tagcloud.html"
 
     def render(self, context, instance, placeholder):
 
+        q = Tag.objects.extra(
+            select={'i_count': 'SELECT COUNT(*) FROM tagging_taggeditem WHERE tagging_taggeditem.tag_id = tagging_tag.id',},
+            where=['i_count > %s' % instance.items_min]
+        ).exclude(name='footer')
+
         context.update({'instance': instance,
-                        'tags': map(lambda t: (t, 10 + t.items.all().count() * 3),
-                            Tag.objects.exclude(name='footer'))})
+                        'tags': map(lambda t: (t, 10 + t.items.all().count() * 3), q)})
 
         return context
 
