@@ -19,7 +19,7 @@ div {
 /*    border: 1px solid black; */
 }
 
-h1,h2,h3,h4,h5,h6,#menu,#breadcrumbs,#page-children,#branchmap {
+h1,h2,h3,h4,h5,h6,#menu,#breadcrumbs,#branchmap {
     font-family: geomedium;
     font-weight: bold;
 }
@@ -347,6 +347,8 @@ input[type="password"] {
     margin: 0;
     padding: 0 !important;
 }
+
+#breadcrumbs { font-size: 115%; }
 
 #breadcrumbs, #page-children {
     margin-left: 0;
