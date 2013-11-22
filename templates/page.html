@@ -11,7 +11,7 @@
 {% if request.current_page.children.count %}<ul id="page-children">{% show_sub_menu 1 %}</ul>{% endif %}
     </div>
 
-    <div class="yui3-u-3-5">
+    <div class="yui3-u-3-5 page">
         <h1>{{ request.current_page.get_title }}</h1>
 {% placeholder "page" %}
     </div>
