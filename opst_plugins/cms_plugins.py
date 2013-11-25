@@ -1,4 +1,4 @@
-import re, copy
+import re, copy, datetime
 
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -16,7 +16,8 @@ from cms.models import Title, Page
 from cms.utils import get_language_from_request
 from cms.utils.moderator import get_cmsplugin_queryset
 
-from .models import TagCloudPluginModel, SearchBoxPluginModel, NewsFeedPluginModel, NewsFeedExtPluginModel
+from .models import TagCloudPluginModel, SearchBoxPluginModel, NewsFeedPluginModel, \
+                    NewsFeedExtPluginModel, NewsFeedPagePluginModel
 from .forms import SearchBoxForm
 
 
@@ -179,14 +180,35 @@ class NewsFeedExtPlugin(CMSPluginBase):
 
         try: 
             context.update({
-                'newsfeedext': feedparser.parse(instance.url)['entries'][0:instance.list_max],
+                'newsfeed': feedparser.parse(instance.url)['entries'][0:instance.list_max],
                 'instance': instance})
         except: pass
 
         return context
 
-
 plugin_pool.register_plugin(NewsFeedExtPlugin)
+
+
+class NewsFeedPagePlugin(CMSPluginBase):
+
+    model = NewsFeedPagePluginModel
+    render_template = "cms_plugins/newsfeedext.html"
+    name = _("News Feed Page")
+    filter_horizontal = ('pages',)
+
+
+    def render(self, context, instance, placeholder):
+
+        if (datetime.datetime.now() - instance.update_last).seconds >= 5*60: instance.update()
+
+        context.update({
+            'newsfeed': map(lambda e: {'link': e.get_path(), 'title': e.get_title()},
+                            instance.pages.all().order_by('-publication_date')[0:instance.list_max]),
+            'instance': instance})
+
+        return context
+
+plugin_pool.register_plugin(NewsFeedPagePlugin)
 
 
 class CarouslideRecentPagesPlugin(CMSPluginBase): #InheritPagePlaceholderPlugin):

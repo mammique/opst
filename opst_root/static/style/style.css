@@ -65,7 +65,7 @@ li {
 
 #header {
     padding-top: 10px;
-    background: transparent url(/static/style/header.png) no-repeat top left;
+    background: transparent url(/static/style/header.png) no-repeat -74px top;
 }
 
 #cms_placeholder-overlay li {
