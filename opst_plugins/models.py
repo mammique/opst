@@ -48,10 +48,16 @@ class NewsFeedPagePluginModel(CMSPlugin):
 
     def update(self):
 
+        print 'xco'
+
         import feedparser
+
         from time import mktime
         from datetime import datetime
+        from slugify import slugify
+
         from django.contrib.sites.models import Site
+
         from cms.models import Page, Title
         from cms.plugins.text.models import Text
 
@@ -81,7 +87,7 @@ class NewsFeedPagePluginModel(CMSPlugin):
                 self.pages.add(p)
                 self.save()
 
-                t=Title(language='en', title=title, slug=p.pk, page=p)
+                t=Title(language='en', title=title, slug=slugify(title), page=p)
                 t.save()
     
                 pl=p.placeholders.get(slot='page')

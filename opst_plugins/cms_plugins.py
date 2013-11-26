@@ -196,10 +196,9 @@ class NewsFeedPagePlugin(CMSPluginBase):
     name = _("News Feed Page")
     filter_horizontal = ('pages',)
 
-
     def render(self, context, instance, placeholder):
 
-        if (datetime.datetime.now() - instance.update_last).seconds >= 5*60: instance.update()
+        if (datetime.datetime.now() - instance.update_last).total_seconds() >= 5*60: instance.update()
 
         context.update({
             'newsfeed': map(lambda e: {'link': e.get_path(), 'title': e.get_title()},
