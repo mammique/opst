@@ -3,6 +3,7 @@ import re, copy, datetime
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.utils.safestring import mark_safe
+from django.db.models import Count
 
 from tagging.models import Tag
 
@@ -32,10 +33,11 @@ class TagCloudPlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
 
-        q = Tag.objects.extra(
-            select={'i_count': 'SELECT COUNT(*) FROM tagging_taggeditem WHERE tagging_taggeditem.tag_id = tagging_tag.id',},
-            where=['i_count > %s' % instance.items_min]
-        ).exclude(name='footer')
+        # q = Tag.objects.extra(
+        #     select={'i_count': 'SELECT COUNT(*) FROM tagging_taggeditem WHERE tagging_taggeditem.tag_id = tagging_tag.id',},
+        #     where=['i_count > %s' % instance.items_min]
+        # ).exclude(name='footer')
+        q = Tag.objects.annotate(i_count=Count('items')).filter(i_count__gt=instance.items_min)
 
         context.update({'instance': instance,
                         'tags': map(lambda t: (t, 10 + t.items.all().count() * 3), q)})
