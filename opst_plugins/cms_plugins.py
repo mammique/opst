@@ -198,7 +198,9 @@ class NewsFeedPagePlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
 
-        if (datetime.datetime.now() - instance.update_last).total_seconds() >= 5*60: instance.update()
+        if not instance.update_last or \
+            (datetime.datetime.now() - instance.update_last).total_seconds() >= 5*60:
+            instance.update()
 
         context.update({
             'newsfeed': map(lambda e: {'link': e.get_path(), 'title': e.get_title()},

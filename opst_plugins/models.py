@@ -48,8 +48,6 @@ class NewsFeedPagePluginModel(CMSPlugin):
 
     def update(self):
 
-        print 'xco'
-
         import feedparser
 
         from time import mktime
@@ -64,40 +62,44 @@ class NewsFeedPagePluginModel(CMSPlugin):
         try: p_last = self.pages.latest('publication_date')
         except Page.DoesNotExist: p_last = None
 
-        for e in feedparser.parse(self.url)['entries']:
+        try:
 
-            date  = e.get('published_parsed')
-            title = e.get('title')
-            body  = e.get('summary')
-            url   = e.get('link')
+            for e in feedparser.parse(self.url)['entries']:
 
-            if date and title and body:
+                date  = e.get('published_parsed')
+                title = e.get('title')
+                body  = e.get('summary')
+                url   = e.get('link')
 
-                date = datetime.fromtimestamp(mktime(date))
+                if date and title and body:
 
-                if p_last and date <= p_last.publication_date: continue
+                    date = datetime.fromtimestamp(mktime(date))
 
-                p=Page(site=Site.objects.all()[0], in_navigation=False, published=True, template='page-full.html')
-                p.publication_date = date
+                    if p_last and date <= p_last.publication_date: continue
 
-                if self.parent_page: p.parent = self.parent_page
+                    p=Page(site=Site.objects.all()[0], in_navigation=False, published=True, template='page-full.html')
+                    p.publication_date = date
+
+                    if self.parent_page: p.parent = self.parent_page
+            
+                    p.save()
+
+                    self.pages.add(p)
+                    self.save()
+
+                    t=Title(language='en', title=title, slug='%s-%s' % (slugify(title), p.pk), page=p)
+                    t.save()
         
-                p.save()
+                    pl=p.placeholders.get(slot='page')
 
-                self.pages.add(p)
-                self.save()
+                    if url: body = u'%s<p><a href="%s">Lire la suite de l\'article…</a></p>' % (body, url)
+                    txt=Text(body=body, language='en', plugin_type='TextPlugin')
+                    txt.save()
 
-                t=Title(language='en', title=title, slug=slugify(title), page=p)
-                t.save()
-    
-                pl=p.placeholders.get(slot='page')
+                    pl.cmsplugin_set.add(txt)
+                    pl.save()
 
-                if url: body = u'%s<p><a href="%s">Lire la suite de l\'article…</a></p>' % (body, url)
-                txt=Text(body=body, language='en', plugin_type='TextPlugin')
-                txt.save()
-
-                pl.cmsplugin_set.add(txt)
-                pl.save()
+        except: pass
 
         self.update_last = datetime.now()
         self.save()
