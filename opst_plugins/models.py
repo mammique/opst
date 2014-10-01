@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+from datetime import date
+
 from django.db import models
+from django.template.defaultfilters import slugify
 
 from cms.models import CMSPlugin
 
@@ -14,6 +17,17 @@ class SearchBoxPluginModel(CMSPlugin):
 
     result_page = models.ForeignKey('cms.Page', related_name='opst_plugin_searchbox')
 
+
+class SearchResultPluginModel(CMSPlugin):
+
+    ressource_page = models.ForeignKey('cms.Page', related_name='opst_plugin_searchresult')
+
+
+class RessourcePluginPluginModel(CMSPlugin):
+
+    result_page = models.ForeignKey('cms.Page', related_name='opst_plugin_ressource')
+
+
 class NewsFeedEntry(models.Model):
 
     title            = models.CharField(max_length=128)
@@ -22,7 +36,7 @@ class NewsFeedEntry(models.Model):
 
     def __unicode__(self): return self.title
 
-
+    
 class NewsFeedPluginModel(CMSPlugin):
 
     title    = models.CharField(max_length=128)
@@ -103,3 +117,140 @@ class NewsFeedPagePluginModel(CMSPlugin):
 
         self.update_last = datetime.now()
         self.save()
+
+
+class Auteur(models.Model):
+
+    nom    = models.CharField(max_length=90)
+    prenom = models.CharField(max_length=90)
+
+    def __unicode__(self): return self.nom + ' ' + self.prenom 
+
+    class Meta:
+        ordering = ['nom']
+
+
+class Categorie(models.Model):
+
+    nom  = models.CharField(max_length=120)
+    slug = models.SlugField(max_length=150)
+
+    def __unicode__(self): return self.nom
+
+    class Meta:
+        ordering = ['nom']
+
+
+class Revue(models.Model):
+
+    nom           = models.CharField(max_length=600)
+    nb_num_revues = models.IntegerField(null=True, blank=True, verbose_name="Nombre de numéros de revues")
+
+    def __unicode__(self): return self.nom
+
+    class Meta:
+        ordering = ['nom']
+
+
+class Tag(models.Model):
+
+    nom  = models.CharField(max_length=120)
+    slug = models.SlugField(max_length=150)
+
+    def __unicode__(self): return self.nom
+
+    def nb_tags(self): return self.items.count()
+
+    nb_tags.short_description = 'Nombre d\'utilisations du tag'
+
+    class Meta:
+        ordering = ['nom']
+
+class SousCategorie(models.Model):
+
+    nom  = models.CharField(max_length=120)
+    slug = models.SlugField(max_length=150, blank=True)
+
+    def __unicode__(self): return self.nom
+
+    class Meta:
+        ordering = ['nom']
+
+
+ressource_mois_choices = (
+                          ('01',    'janvier'),
+                          ('02',    'février'),
+                          ('03',    'mars'),
+                          ('04',    'avril'),
+                          ('05',    'mai'),
+                          ('06',    'juin'),
+                          ('07',    'juillet'),
+                          ('08',    'août'),
+                          ('09',    'septembre'),
+                          ('10',    'octobre'),
+                          ('11',    'novembre'),
+                          ('12',    'décembre'),
+
+                          ('01-02', 'janvier-février'),
+                          ('02-03', 'février-mars'),
+                          ('03-04', 'mars-avril'),
+                          ('04-05', 'avril-mai'),
+                          ('05-06', 'mai-juin'),
+                          ('06-07', 'juin-juillet'),
+                          ('07-08', 'juillet-août'),
+                          ('08-09', 'août-septembre'),
+                          ('09-10', 'septembre-octobre'),
+                          ('10-11', 'octobre-novembre'),
+                          ('11-12', 'novembre-décembre'),
+                          ('12-01', 'décembre-janvier'),
+
+                          ('09-12', 'automne'),
+                          ('12-03', 'hiver'),
+                          ('03-06', 'printemps'),
+                          ('06-09', 'été'),
+                         )
+
+ressource_year_choices = map(lambda x: (x, '%s'%x), range(1950, (date.today().year+2)))
+ressource_year_choices.reverse()
+
+class Ressource(models.Model):
+
+    titre           = models.CharField(max_length=900)
+    slug            = models.SlugField(max_length=900, blank=True)
+    texte           = models.TextField(blank=True)
+    lien_texte      = models.CharField(max_length=1800, blank=True)
+    annee           = models.IntegerField(choices=ressource_year_choices)
+    mois            = models.SlugField(max_length=30, blank=True, choices=ressource_mois_choices)
+    lieu            = models.CharField(max_length=300, blank=True)
+    page_deb        = models.IntegerField(null=True, blank=True, verbose_name='Page de début')
+    page_fin        = models.IntegerField(null=True, blank=True, verbose_name='Page de fin')
+    date_debut      = models.DateField(null=True, blank=True, verbose_name='Date de début')
+    date_fin        = models.DateField(null=True, blank=True, verbose_name='Date de fin')
+    editeur         = models.CharField(max_length=450, blank=True)
+    formation       = models.CharField(max_length=300, blank=True)
+    universite      = models.CharField(max_length=300, blank=True, verbose_name='Université')
+    discipline      = models.CharField(max_length=300, blank=True)
+    type_production = models.CharField(max_length=900, blank=True)
+    type_rapport    = models.CharField(max_length=900, blank=True)
+    revue           = models.ForeignKey(Revue, verbose_name= 'Nom de la revue attribuée', null=True, blank=True)
+    tags            = models.ManyToManyField(Tag)
+    auteurs         = models.ManyToManyField(Auteur)
+    categories      = models.ManyToManyField(Categorie, verbose_name=u'Catégorie', null=True, blank=True)
+    subcats         = models.ManyToManyField(SousCategorie, verbose_name=u'Sous-Catégorie', null=True, blank=True)
+
+    def __unicode__(self): return self.titre
+
+    class Meta:
+        ordering = ['annee', 'titre']
+
+
+class RessourcePluginModel(CMSPlugin):
+    
+    ressource      = models.ForeignKey(Ressource, verbose_name='Ressource')
+    categorie      = models.ForeignKey(Categorie, verbose_name='Catégorie')
+    sous_categorie = models.ForeignKey(SousCategorie, verbose_name='Sous-Catégorie')
+
+
+class MultipleSearchBoxPluginModel(CMSPlugin):
+	
+    result_page = models.ForeignKey('cms.Page', related_name="opst_plugin_multiplesearchbox")

@@ -1,24 +1,27 @@
 {% load cms_tags sekizai_tags menu_tags page_tags %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{% load staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>OPSN - {{ request.current_page.get_title }}</title>
+    <title>OPSN - {{ request.current_page.get_title|default:"Affichage" }}</title>
     <meta name="keywords" content="{{ request.current_page.pagetagging.page_tags }}" />
-    <link rel="icon" type="image/png" href="{{ STATIC_URL }}/style/logo_128.png" />
+    <link rel="icon" type="image/png" href="{% static "style/logo_128.png" %}" />
+	<script src="{% static "js/jquery-1.8.3.min.js" %}"></script>
+	<script src="{% static "js/jquery.jtruncate.js" %}"></script>
     {% render_block "css" %}
 {% addtoblock "css" %}
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/style/yui3-fonts-reset-grids-base-combo-min.css" media="all" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/style/style.css" media="all" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/style/stylesheet.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static "style/yui3-fonts-reset-grids-base-combo-min.css" %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static "style/style.css" %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static "style/stylesheet.css" %}" media="all" />
+	<link rel="stylesheet" href="{% static "style/font-awesome/css/font-awesome.min.css" %}" media="all">
 {% endaddtoblock %}
 </head>
 
 <body>
 
-<!-- Piwik -->
 <script type="text/javascript">
+// Piwik
   var _paq = _paq || [];
   _paq.push(["trackPageView"]);
   _paq.push(["enableLinkTracking"]);
@@ -30,8 +33,22 @@
     var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
     g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
   })();
+// End Piwik Code
+
+// On attend que la page soit chargée
+jQuery(document).ready(function()
+{
+   jQuery('.toggle').jTruncate({
+		moreText: "[lire la suite]",
+		length: 300,  
+        minTrail: 10,   
+        lessText: "[cacher texte]",  
+        ellipsisText: "...",  
+        moreAni: "fast",  
+        lessAni: 300
+	});
+});
 </script>
-<!-- End Piwik Code -->
 
     {% cms_toolbar %}
     {% render_block "js" %}

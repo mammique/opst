@@ -1,12 +1,16 @@
+# -*- coding: utf-8 -*-
 import re, copy, datetime
+from math import log
 
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.utils.safestring import mark_safe
-from django.db.models import Count
+from django.db.models import Count, query
+from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 from tagging.models import Tag
-
+from ressource_lib import *
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from cms.models.pluginmodel import CMSPlugin as CMSPluginModel
@@ -18,8 +22,11 @@ from cms.utils import get_language_from_request
 from cms.utils.moderator import get_cmsplugin_queryset
 
 from .models import TagCloudPluginModel, SearchBoxPluginModel, NewsFeedPluginModel, \
-                    NewsFeedExtPluginModel, NewsFeedPagePluginModel
-from .forms import SearchBoxForm
+                    RessourcePluginModel, MultipleSearchBoxPluginModel, \
+                    NewsFeedExtPluginModel, NewsFeedPagePluginModel, Auteur, Ressource, \
+                    SearchResultPluginModel, RessourcePluginPluginModel, RessourcePluginModel, \
+                    Tag as Tag1
+from .forms import SearchBoxForm, MultipleSearchBoxForm
 
 
 re_blanks = re.compile('\s+')
@@ -37,16 +44,17 @@ class TagCloudPlugin(CMSPluginBase):
         #     select={'i_count': 'SELECT COUNT(*) FROM tagging_taggeditem WHERE tagging_taggeditem.tag_id = tagging_tag.id',},
         #     where=['i_count > %s' % instance.items_min]
         # ).exclude(name='footer')
-        q = Tag.objects.annotate(i_count=Count('items')).filter(i_count__gt=instance.items_min)
-
+        q = Tag1.objects.annotate(i_count=Count('ressource')).filter(i_count__gte=instance.items_min)
+		
         context.update({'instance': instance,
-                        'tags': map(lambda t: (t, 10 + (t.i_count - instance.items_min) * 3), q)})
+                        'tags': map(lambda t: (t, 10 + (min(t.i_count,30) - instance.items_min) * 1), q)})
 
         return context
 
 plugin_pool.register_plugin(TagCloudPlugin)
 
 
+# Plugin de recherche simple
 class SearchBoxPlugin(CMSPluginBase):
 
     model = SearchBoxPluginModel
@@ -56,42 +64,148 @@ class SearchBoxPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
 
         f = SearchBoxForm(context['request'].GET)
+        f2 = MultipleSearchBoxForm(context['request'].GET)
+        # Envoi des variables au template incluant le formulaire f et l'instance de la classe modele
         context.update({'instance': instance,
-                        'form': f})
+                        'form2': f2,
+                        'form': f,
+                        'path': context['request'].path_info,
+                        'q': context['request'].GET.get('q')})
 
         return context
 
 plugin_pool.register_plugin(SearchBoxPlugin)
 
 
-class SearchResultPlugin(CMSPluginBase):
+## Plugin de recherche multi-criteres heritee de CMSPluginBase
+#class MultipleSearchBoxPlugin(CMSPluginBase):
+#	
+#    # Recuperation du modele contenant les champs necessaire a la creation du plugin
+#    model = MultipleSearchBoxPluginModel
+#    # Nommage du plugin pour qu'il soit facilement reperable dans la liste des plugins
+#    name = _("Multiple Search Box")
+#    # Template ou fichier HTML qui servira de representation visuelle du plugin
+#    render_template = "cms_plugins/multiplesearchbox.html"
+#
+#    # Redefinition de la methode render. Cette fonction permet d'envoyer des variables utilisables dans le template
+#    def render(self, context, instance, placeholder):
+#
+#        # Instanciation de la classe formulaire et stockage dans la variable f
+#		# Cette classe contient l'ensemble des champs necessaire a la creation du formulaire de recherche multi-criteres
+#        f = MultipleSearchBoxForm(context['request'].GET)
+#        # Envoi des variables au template incluant le formulaire f et l'instance de la classe modele
+#        context.update({'instance': instance,
+#                        'form': f})
+#
+#        return context
+## Ajout du plugin a la liste
+#plugin_pool.register_plugin(MultipleSearchBoxPlugin)
 
-    model = CMSPluginModel
-    name = _("Search Result")
-    render_template = "cms_plugins/searchresult.html"
+
+class ListRessourcesPlugin(CMSPluginBase): # FIXME: rename to RessourceList
+
+    name = _("ListeRessources")
+    render_template = "cms_plugins/ressource_list.html"
 
     def render(self, context, instance, placeholder):
-
-        results = {}
-
-        f = SearchBoxForm(context['request'].GET)
-
-        if f.is_valid():
-
-            q = f.cleaned_data.get('q')
-            q_re = '(%s)' % '|'.join(re_blanks.split(q))
-
-            for i in list(Title.objects.filter(title__iregex=q_re)):
-                if not i.page in results: results[i.page] = i.title
-
-            for i in list(Text.objects.filter(body__iregex=q_re)):
-                if not i.page in results: results[i.page] = i.body
-
-        context.update({'results': results, 'results_n': len(results)})
+        ressources = get_ressources(context['request'].path_info)
+        # Donnees de la ressource a passer au template, instance est obligatoire
+        context.update({'instance': instance,
+                        'ressources': ressources,
+                        'annees': get_dates(ressources),
+                        'request': context['request']
+                        })
 
         return context
 
+plugin_pool.register_plugin(ListRessourcesPlugin)
+
+
+# Plugin de resultat de recherche
+class SearchResultPlugin(CMSPluginBase):
+
+    # Utilisation d'un plugin de modeles ordinaire
+    model = SearchResultPluginModel
+    # Nommage du plugin
+    name = _("Search Result")
+    # Template qui servira de representation visuelle du plugin
+    render_template = "cms_plugins/searchresult.html"
+
+    # Redefinition de la methode ancetre render
+    def render(self, context, instance, placeholder):
+
+        context.update({'instance': instance})
+
+        if context['request'].GET.get('target') == 'site':
+
+            results = {}
+
+            f = SearchBoxForm(context['request'].GET)
+
+            if f.is_valid():
+
+                q = f.cleaned_data.get('q')
+                q_re = '(%s)' % '|'.join(re_blanks.split(q))
+
+                for i in list(Title.objects.filter(title__iregex=q_re)):
+                    if not i.page in results: results[i.page] = i.title
+
+                for i in list(Text.objects.filter(body__iregex=q_re)):
+                    if not i.page in results: results[i.page] = i.body
+           
+            context.update({'results': results, 'results_n': len(results)})
+
+            return context
+
+        else:
+
+            if context['request'].GET.get('q'):
+                # Recuperation du formulaire rempli avec les donnees
+                f = SearchBoxForm(context['request'].GET)
+                
+                # Si le formulaire est valide(tous les parametres sont remplis, pas de depassement de taille de donnee)
+                if f.is_valid():
+                    
+                    # Recuperation du parametre q du formulaire
+                    q = f.cleaned_data.get('q')
+                    # traitement de la chaine envoyee par le formulaire ainsi que des ordres de tri et de la pagination
+                    (results, nb_res) = traitement_requete_simple(q)
+                    # Traitement dans le cas d'envoi de parametre q non renseigne
+                    try:
+                        context.update({'results': results, 'results_n': nb_res, 'query_string': q.strip(), 'sort': context['request'].GET.get('sort')})
+                    except UnboundLocalError:
+                        context.update({'results': [], 'results_n': 0, 'query_string': ''})
+            elif context['request'].GET.get('crit_1'):
+                (results, nb_res) = traitement_requete_avancee(context)
+                context.update({'results': results, 'results_n': nb_res, 'sort': context['request'].GET.get('sort')})
+            else:
+                context.update({'results': [], 'results_n': 0, 'query_string': ''})
+            return context
+# Ajout du plugin a la liste
 plugin_pool.register_plugin(SearchResultPlugin)
+
+
+class RessourcePlugin(CMSPluginBase):
+
+    model           = RessourcePluginPluginModel
+    name            = _("Ressource")
+    render_template = "cms_plugins/ressource.html"
+
+    def render(self, context, instance, placeholder):
+
+        slug = context['request'].GET.get('r')
+        # Récupération de la ressource
+        ressource = get_object_or_404(Ressource, slug=slug)
+        # Récupération des auteurs
+        auteurs = ressource.auteurs.all()
+        # Récupération des tags
+        tags = ressource.tags.all()
+
+        context.update({'slug': slug, 'ressource': ressource, 'auteurs': auteurs, 'tags': tags, 'instance': instance})
+
+        return context
+
+plugin_pool.register_plugin(RessourcePlugin)
 
 
 class SitemapPlugin(CMSPluginBase):
@@ -245,28 +359,32 @@ class CarouslideRecentPagesPlugin(CMSPluginBase): #InheritPagePlaceholderPlugin)
             else:
                 from_page = from_page.get_public_object()
 
-            plugins = get_cmsplugin_queryset(request).filter(
-                placeholder__page=from_page,
-                language=lang,
-                placeholder__slot__iexact='page', #placeholder,
-                parent__isnull=True
-            ).order_by('position').select_related()
-            plugin_output = ['<h1>%s</h1>' % from_page.get_title()]
-            template_vars['parent_plugins'] = plugins 
-            for plg in plugins:
-                tmpctx = copy.copy(context)
-                tmpctx.update(template_vars)
-                inst, name = plg.get_plugin_instance()
-                if inst is None:
-                    continue
-                outstr = inst.render_plugin(tmpctx, placeholder)
-                plugin_output.append(outstr)
+            try:
+                plugins = get_cmsplugin_queryset(request).filter(
+                    placeholder__page=from_page,
+                    language=lang,
+                    placeholder__slot__iexact='page', #placeholder,
+                    parent__isnull=True
+                ).order_by('position').select_related()
+                plugin_output = ['<h1>%s</h1>' % from_page.get_title()]
+                template_vars['parent_plugins'] = plugins 
+                for plg in plugins:
+                    tmpctx = copy.copy(context)
+                    tmpctx.update(template_vars)
+                    inst, name = plg.get_plugin_instance()
+                    if inst is None:
+                        continue
+                    outstr = inst.render_plugin(tmpctx, placeholder)
+                    plugin_output.append(outstr)
+            except Http404: plugin_output.append('404 Not Found')
             if from_page == from_pages[0]:
                 el_attrs = 'class="button carouslide-focus"'
             else:
                 el_attrs = 'class="button carouslide-blur"'
             divs.append('<div onclick="document.location=\'%s\'" %s>%s</div>' % \
                 (from_page.get_absolute_url(), el_attrs, ''.join(plugin_output)))
+
+
 #        template_vars['carouslide_content'] = mark_safe('<div>%s</div>' % \
 #            '</div><div>'.join(divs))
         template_vars['carouslide_content'] = mark_safe(''.join(divs))

@@ -1,22 +1,73 @@
-<div id="search-result">
-    {% if request.GET.tag %}
-    {% load page_tags %}    
-    <h2>Catégorie "{{ request.GET.tag }}"&nbsp;:</h2>
-    {% with tag=request.GET.tag %}
-{#    {% pages_with_tags tag order alphabetical limit 10 as page_list %} #}
-    {% pages_with_tags tag order alphabetical as page_list %}
-    <ul>
-{% for p in page_list %}
-        <li><a href="{{ p.get_absolute_url }}">{{ p.get_title }}</a></li>
-{% endfor %}
-    </ul>
-    {% endwith %}
-    {% else %}
-    <h2>{{ results_n }} resultat{% if results_n %}s{% endif %} pour "{{ request.GET.q }}"{% if results_n %}&nbsp;:{% else %}.{% endif %}</h2>
-    <ul>
-{% for p in results %}
-        <li><a href="{{ p.get_absolute_url }}">{{ p.get_title }}</a></li>
-{% endfor %}
-    </ul>
-    {% endif %}
-</div>
+{% ifequal request.GET.target 'site' %}
+
+    <div id="search-result">
+        <ul>
+    {% for p in page_list %}
+            <li><a href="{{ p.get_absolute_url }}">{{ p.get_title }}</a></li>
+    {% endfor %}
+        </ul>
+        <h2>{{ results_n }} resultat{{ results_n|pluralize }} pour "{{ request.GET.q }}"{% if results_n %}&nbsp;:{% else %}.{% endif %}</h2>
+        <ul>
+    {% for p in results %}
+            <li><a href="{{ p.get_absolute_url }}">{{ p.get_title }}</a></li>
+    {% endfor %}
+        </ul>
+    </div>
+
+{% else %}
+
+    {% comment %}
+        Ce template permet l'affichage des resultats d'une recherche
+    {% endcomment %}
+    {# charge le module de pagination #}
+    {% load pagination_tags %}
+    {# charge le module de tri #}
+    {% load sorter_tags %}
+    {# l'importation de ce module permet de manipuler la fonction 'url' de la meme maniere que dans les dernieres versions de django #}
+    {% load url from future %}
+
+    <div id="search-result">
+        {# L'affichage de variable envoyees par le plugin SearchResultPlugin se fait en ecrivant la variable a l'interieur des balises "{{ }}" #}
+        <h2>{{ results_n }} resultat{{ results_n|pluralize }} obtenu{{ results_n|pluralize }}{% if query_string %} pour "{{ query_string }}"{% endif %}.</h2>
+        
+        {# Traitement des conditions et des boucles dans des balises "{% %}" #}
+        {# s'il y a des resultats #}
+        {% if results_n != 0 %}
+
+        <div class="TableauResultat">
+            <table>
+                {# trie les resultats selon le parametre "sort" donne par l'url #}
+                {% sort results as sorted_objects %}
+                {# Ligne d'entete du tableau #}
+                <tr>
+                    {# "ifequal" renvoie seulement si les deux chaines donnees sont identiques #}
+                    <td> Auteur(s) </td>
+                    <td> {% sortlink by 'titre' '-titre' %} Titre {% endsortlink %} {% ifequal sort '-titre' %}<i class="fa fa-sort-desc"></i> {% else %}{% ifequal sort 'titre' %} <i class="fa fa-sort-asc"></i> {% endifequal %}{% endifequal %} </td>
+                    <td> {% sortlink by 'texte' '-texte' %} Texte {% endsortlink %} {% ifequal sort '-texte' %}<i class="fa fa-sort-desc"></i> {% else %}{% ifequal sort 'texte' %} <i class="fa fa-sort-asc"></i> {% endifequal %}{% endifequal %} </td>
+                    <td> {% sortlink by 'annee' '-annee' %} Année{% endsortlink %} {% if not sort %} <i class="fa fa-sort-desc"></i> {% endif %} {% ifequal sort 'annee' %}<i class="fa fa-sort-asc"></i> {% else %}{% ifequal sort '-annee' %} <i class="fa fa-sort-desc"></i> {% endifequal %}{% endifequal %} </td>
+                    <td> Tag(s) </td>
+                    <td> Nature(s) </td>
+                    <td> Compléments </td>
+                </tr>
+                {# On delimite le nombre de resultats a 10 par pages #}
+                {% autopaginate sorted_objects 10 %}
+                {# Pour chaque ressource recupere dans la liste "results" on affiche une nouvelle ligne #}
+                {% for une_ressource in sorted_objects %}
+                    <tr>
+                        <td> <div id="cadre">{% for un_auteur in une_ressource.auteurs.all %} <a href="?q={{ un_auteur.nom }}+{{ un_auteur.prenom }}"> {{ un_auteur.nom }} {{ un_auteur.prenom }}.</a> <br/> {% empty %} Aucun auteur {% endfor %} </div> </td>
+                        <td> {% if une_ressource.lien_texte %}<div id="cadre"><a href="{{ une_ressource.lien_texte }}" target="_blank"> {% endif %} {{ une_ressource.titre }} </a> </div> </td>
+                        <td> {% if une_ressource.texte %} {{ une_ressource.texte|truncatewords:20 }} </div> {% else %} Aucun texte {% endif %} </td>
+                        <td> <a href="?q={{ une_ressource.annee }}"> {{ une_ressource.annee }}</a> </td>
+                        <td> {% if une_ressource.tags.all %}<div id="cadre">{% endif %}{% for un_tag in une_ressource.tags.all %} <a href="?q={{ un_tag.nom }}"> {{ un_tag.nom }}</a> <br/> {% empty %} Aucun tag {% endfor %} </div> </td>
+                        <td> <div id="cadre">{% for une_nature in une_ressource.subcats.all %} <a href="?q={{ une_nature.nom }}"> {{ une_nature.nom }}</a> {% empty %} Aucune nature {% endfor %} </div> </td>
+                        <td> <b> <a href="{{ instance.ressource_page.get_absolute_url }}?r={{ une_ressource.slug }}"> Plus d'infos </a> </b> </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <br/><br/>
+        {% paginate %}
+        {% endif %}
+    </div>
+
+{% endifequal %}

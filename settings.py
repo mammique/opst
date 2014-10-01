@@ -4,7 +4,7 @@ import os
 gettext = lambda s: s
 
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
-
+APPEND_SLASH=True
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -50,6 +50,12 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+DATE_FORMAT = 'j N Y'
+
+DATE_INPUT_FORMATS = (
+    '%d %b %Y', '%d %b, %Y',
+)
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
@@ -63,6 +69,12 @@ MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+)
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
@@ -73,8 +85,8 @@ SECRET_KEY = ''
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.filesystem.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -86,11 +98,13 @@ MIDDLEWARE_CLASSES = (
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
+    'pagination.middleware.PaginationMiddleware',
 #    'cms.middleware.multilingual.MultilingualURLMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
+	'django.contrib.auth.context_processors.auth',
+    #'django.core.context_processors.auth',
     'django.core.context_processors.i18n',
     'django.core.context_processors.request',
     'django.core.context_processors.media',
@@ -163,6 +177,8 @@ INSTALLED_APPS = (
     'sekizai',
     'tagging',
     'pagetags',
+    'pagination',
+	'sorter',
 #    'cmsplugin_htmlsitemap',
     'opst_root',
     'opst_plugins',
@@ -177,6 +193,11 @@ THUMBNAIL_PROCESSORS = (
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters',
 )
+
+SORTER_ALLOWED_CRITERIA = {
+    'sort': ['titre', 'texte', 'annee'],
+    'sort_posts': [],
+}
 
 WYM_TOOLS = ",\n".join([
     "{'name': 'Bold', 'title': 'Strong', 'css': 'wym_tools_strong'}",
