@@ -264,9 +264,9 @@ plugin_pool.register_plugin(FocusPlugin)
 
 class NewsFeedPlugin(CMSPluginBase):
 
-    model = NewsFeedPluginModel
-    render_template = "cms_plugins/newsfeed.html"
-    name = _("News Feed")
+    model             = NewsFeedPluginModel
+    render_template   = "cms_plugins/newsfeed.html"
+    name              = _("News Feed")
     filter_horizontal = ('news',)
 
     def render(self, context, instance, placeholder):

@@ -10,7 +10,7 @@ from cms.models import CMSPlugin
 class TagCloudPluginModel(CMSPlugin):
 
     result_page = models.ForeignKey('cms.Page', related_name='opst_plugin_tagcloud')
-    items_min = models.PositiveIntegerField(default=3)
+    items_min   = models.PositiveIntegerField(default=3)
 
 
 class SearchBoxPluginModel(CMSPlugin):
@@ -32,11 +32,11 @@ class NewsFeedEntry(models.Model):
 
     title            = models.CharField(max_length=128)
     url              = models.URLField()
-    publication_date = models.DateTimeField(blank=True, null=True)
+    publication_date = models.DateTimeField(db_index=True, blank=True, null=True)
 
     def __unicode__(self): return self.title
 
-    
+
 class NewsFeedPluginModel(CMSPlugin):
 
     title    = models.CharField(max_length=128)
@@ -121,8 +121,8 @@ class NewsFeedPagePluginModel(CMSPlugin):
 
 class Auteur(models.Model):
 
-    nom    = models.CharField(max_length=90)
-    prenom = models.CharField(max_length=90)
+    nom    = models.CharField(db_index=True, max_length=90)
+    prenom = models.CharField(db_index=True, max_length=90)
 
     def __unicode__(self): return self.nom + ' ' + self.prenom 
 
@@ -132,7 +132,7 @@ class Auteur(models.Model):
 
 class Categorie(models.Model):
 
-    nom  = models.CharField(max_length=120)
+    nom  = models.CharField(db_index=True, max_length=120)
     slug = models.SlugField(max_length=150)
 
     def __unicode__(self): return self.nom
@@ -143,7 +143,7 @@ class Categorie(models.Model):
 
 class Revue(models.Model):
 
-    nom           = models.CharField(max_length=600)
+    nom           = models.CharField(db_index=True, max_length=600)
     nb_num_revues = models.IntegerField(null=True, blank=True, verbose_name="Nombre de numéros de revues")
 
     def __unicode__(self): return self.nom
@@ -154,7 +154,7 @@ class Revue(models.Model):
 
 class Tag(models.Model):
 
-    nom  = models.CharField(max_length=120)
+    nom  = models.CharField(db_index=True, max_length=120)
     slug = models.SlugField(max_length=150)
 
     def __unicode__(self): return self.nom
@@ -168,7 +168,7 @@ class Tag(models.Model):
 
 class SousCategorie(models.Model):
 
-    nom  = models.CharField(max_length=120)
+    nom  = models.CharField(db_index=True, max_length=120)
     slug = models.SlugField(max_length=150, blank=True)
 
     def __unicode__(self): return self.nom
@@ -215,23 +215,23 @@ ressource_year_choices.reverse()
 
 class Ressource(models.Model):
 
-    titre           = models.CharField(max_length=900)
-    slug            = models.SlugField(max_length=900, blank=True)
-    texte           = models.TextField(blank=True)
-    lien_texte      = models.CharField(max_length=1800, blank=True)
-    annee           = models.IntegerField(choices=ressource_year_choices)
+    titre           = models.CharField(db_index=True, max_length=767)
+    slug            = models.SlugField(max_length=767, blank=True)
+    texte           = models.TextField(db_index=True, blank=True)
+    lien_texte      = models.CharField(max_length=767, blank=True)
+    annee           = models.IntegerField(db_index=True, choices=ressource_year_choices)
     mois            = models.SlugField(max_length=30, blank=True, choices=ressource_mois_choices)
-    lieu            = models.CharField(max_length=300, blank=True)
+    lieu            = models.CharField(db_index=True, max_length=300, blank=True)
     page_deb        = models.IntegerField(null=True, blank=True, verbose_name='Page de début')
     page_fin        = models.IntegerField(null=True, blank=True, verbose_name='Page de fin')
     date_debut      = models.DateField(null=True, blank=True, verbose_name='Date de début')
     date_fin        = models.DateField(null=True, blank=True, verbose_name='Date de fin')
-    editeur         = models.CharField(max_length=450, blank=True)
-    formation       = models.CharField(max_length=300, blank=True)
-    universite      = models.CharField(max_length=300, blank=True, verbose_name='Université')
-    discipline      = models.CharField(max_length=300, blank=True)
-    type_production = models.CharField(max_length=900, blank=True)
-    type_rapport    = models.CharField(max_length=900, blank=True)
+    editeur         = models.CharField(db_index=True, max_length=450, blank=True)
+    formation       = models.CharField(db_index=True, max_length=300, blank=True)
+    universite      = models.CharField(db_index=True, max_length=300, blank=True, verbose_name='Université')
+    discipline      = models.CharField(db_index=True, max_length=300, blank=True)
+    type_production = models.CharField(db_index=True, max_length=767, blank=True)
+    type_rapport    = models.CharField(db_index=True, max_length=767, blank=True)
     revue           = models.ForeignKey(Revue, verbose_name= 'Nom de la revue attribuée', null=True, blank=True)
     tags            = models.ManyToManyField(Tag)
     auteurs         = models.ManyToManyField(Auteur)
