@@ -45,7 +45,7 @@ class RessourceAdmin(admin.ModelAdmin):
     fieldsets = (
         # Fieldset 1 : meta-info (titre, auteur…)
        ('Informations Générales', {
-            'fields': ('titre', 'slug', 'annee', 'mois', 'lieu', 'editeur', 'formation', 'universite', 'discipline', 'auteurs', 'categories', 'subcats', 'tags',)
+            'fields': ('titre', 'slug', 'annee', 'mois', 'lieu', 'editeur', 'formation', 'universite', 'discipline', 'categories', 'subcats', 'tags',)
         }),
         # Fieldset 2 : contenu de la ressource
         ('Contenu de la ressource', {
@@ -59,11 +59,12 @@ class RessourceAdmin(admin.ModelAdmin):
     )
 	# Remplie automatiquement le champ "slug" avec "titre"
     prepopulated_fields = {'slug': ('titre', 'annee'), }
-    filter_horizontal = ('tags', 'auteurs', 'categories', 'subcats',)
+    filter_horizontal = ('tags', 'categories', 'subcats',)
     #exclude = ("tags", )
-    #inlines = (
+    inlines = (
        #TagInline, AuteurInline
-    #)
+       AuteurInline,
+    )
 
 # Cette classe gere l'affichage du modele Auteur
 class AuteurAdmin(admin.ModelAdmin):

@@ -4,6 +4,8 @@ from datetime import date
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from sortedm2m.fields import SortedManyToManyField
+
 from cms.models import CMSPlugin
 
 
@@ -234,7 +236,8 @@ class Ressource(models.Model):
     type_rapport    = models.CharField(db_index=True, max_length=767, blank=True)
     revue           = models.ForeignKey(Revue, verbose_name= 'Nom de la revue attribuée', null=True, blank=True)
     tags            = models.ManyToManyField(Tag)
-    auteurs         = models.ManyToManyField(Auteur)
+    #auteurs         = models.ManyToManyField(Auteur)
+    auteurs         = SortedManyToManyField(Auteur)
     categories      = models.ManyToManyField(Categorie, verbose_name=u'Catégorie', null=True, blank=True)
     subcats         = models.ManyToManyField(SousCategorie, verbose_name=u'Sous-Catégorie', null=True, blank=True)
 

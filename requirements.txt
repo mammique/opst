@@ -24,3 +24,4 @@ html5lib==0.95
 python-slugify==0.0.6
 six==1.7.3
 wsgiref==0.1.2
+django-sortedm2m==0.8.1
