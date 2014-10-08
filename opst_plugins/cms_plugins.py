@@ -25,7 +25,7 @@ from .models import TagCloudPluginModel, SearchBoxPluginModel, NewsFeedPluginMod
                     RessourcePluginModel, MultipleSearchBoxPluginModel, \
                     NewsFeedExtPluginModel, NewsFeedPagePluginModel, Auteur, Ressource, \
                     SearchResultPluginModel, RessourcePluginPluginModel, RessourcePluginModel, \
-                    Tag as Tag1
+                    RessourceListPluginPluginModel, Tag as Tag1
 from .forms import SearchBoxForm, MultipleSearchBoxForm
 
 
@@ -34,8 +34,8 @@ re_blanks = re.compile('\s+')
 
 class TagCloudPlugin(CMSPluginBase):
 
-    model = TagCloudPluginModel
-    name = _("Tag Cloud")
+    model           = TagCloudPluginModel
+    name            = _("Tag Cloud")
     render_template = "cms_plugins/tagcloud.html"
 
     def render(self, context, instance, placeholder):
@@ -57,8 +57,8 @@ plugin_pool.register_plugin(TagCloudPlugin)
 # Plugin de recherche simple
 class SearchBoxPlugin(CMSPluginBase):
 
-    model = SearchBoxPluginModel
-    name = _("Search Box")
+    model           = SearchBoxPluginModel
+    name            = _("Search Box")
     render_template = "cms_plugins/searchbox.html"
 
     def render(self, context, instance, placeholder):
@@ -104,7 +104,8 @@ plugin_pool.register_plugin(SearchBoxPlugin)
 
 class ListRessourcesPlugin(CMSPluginBase): # FIXME: rename to RessourceList
 
-    name = _("ListeRessources")
+    model           = RessourceListPluginPluginModel
+    name            = _("ListeRessources")
     render_template = "cms_plugins/ressource_list.html"
 
     def render(self, context, instance, placeholder):

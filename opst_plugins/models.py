@@ -30,6 +30,11 @@ class RessourcePluginPluginModel(CMSPlugin):
     result_page = models.ForeignKey('cms.Page', related_name='opst_plugin_ressource')
 
 
+class RessourceListPluginPluginModel(CMSPlugin):
+
+    result_page = models.ForeignKey('cms.Page', related_name='opst_plugin_ressource_list')
+
+
 class NewsFeedEntry(models.Model):
 
     title            = models.CharField(max_length=128)

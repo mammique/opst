@@ -3,35 +3,35 @@
 	<div class="ressource">
 		{% ifequal annees|last ressource.annee %}
 		{% else %}
-		<b> {{annees.pop.del}}{{ annees|last }} </b><br/><br/>
+		<b>{{annees.pop.del}}{{ annees|last }} </b><br/><br/>
 		{% endifequal %}
 		{% for un_auteur in ressource.auteurs.all %}
-		<a href="?q={{un_auteur.nom}}+{{un_auteur.prenom}}">{{un_auteur.nom}} {{un_auteur.prenom}}.</a>,
+		<a href="{{ instance.result_page.get_absolute_url }}?q={{un_auteur.nom}}+{{un_auteur.prenom}}">{{un_auteur.nom}} {{un_auteur.prenom}}.</a>,
 		{% endfor %}
 		{% if ressource.lien_texte %}<a href="{{ressource.lien_texte}}" target="_blank" id="titre">{% endif %}« {{ressource.titre}} »</a>,
 		{% if ressource.texte %}<div class="toggle">{{ressource.texte}}</div> {% endif %}
-		{% if ressource.mois %} <a href="?q={{ressource.mois}}"> {{ressource.mois}}</a> {% endif %}
-		<a href="?q={{ressource.annee}}">{{ressource.annee}}</a>,
+		{% if ressource.mois %} <a href="{{ instance.result_page.get_absolute_url }}?q={{ressource.mois}}"> {{ressource.mois}}</a> {% endif %}
+		<a href="{{ instance.result_page.get_absolute_url }}?q={{ressource.annee}}">{{ressource.annee}}</a>,
 		{% if ressource.revue.nom %}
-		<i> <a href="?q={{ressource.revue.nom}}"> {{ressource.revue.nom}}</a></i>, {% endif %}
+		<i> <a href="{{ instance.result_page.get_absolute_url }}?q={{ressource.revue.nom}}"> {{ressource.revue.nom}}</a></i>, {% endif %}
 		{% if ressource.page_deb and ressource.page_fin %} p.{{ ressource.page_deb }}-{{ressource.page_fin}}, {% endif %}
 		{% if ressource.date_debut and ressource.date_fin %} {% ifequal ressource.date_debut ressource.date_fin %} {{ressource.date_debut}} {% else %}  du {{ressource.date_debut}} au {{ressource.date_fin}}, {% endifequal %} {% endif %}					
-		{% if ressource.editeur %}  <a href="?q={{ressource.editeur}}"> {{ressource.editeur}}</a>, {% endif %}
-		{% if ressource.formation %} <a href="?q={{ressource.formation}}"> {{ressource.formation}}</a>, {% endif %}
-		{% if ressource.universite %} <a href="?q={{ressource.universite}}">  Université de {{ressource.universite}}</a>, {% endif %}
-		{% if ressource.discipline %} <a href="?q={{ressource.discipline}}"> {{ressource.discipline}}</a>, {% endif %}
+		{% if ressource.editeur %}  <a href="{{ instance.result_page.get_absolute_url }}?q={{ressource.editeur}}"> {{ressource.editeur}}</a>, {% endif %}
+		{% if ressource.formation %} <a href="{{ instance.result_page.get_absolute_url }}?q={{ressource.formation}}"> {{ressource.formation}}</a>, {% endif %}
+		{% if ressource.universite %} <a href="{{ instance.result_page.get_absolute_url }}?q={{ressource.universite}}">  Université de {{ressource.universite}}</a>, {% endif %}
+		{% if ressource.discipline %} <a href="{{ instance.result_page.get_absolute_url }}?q={{ressource.discipline}}"> {{ressource.discipline}}</a>, {% endif %}
 		{% if ressource.type_production %} {{ressource.type_production}}, {% endif %}
 		{% if ressource.type_rapport %} {{ressource.type_rapport}},{% endif %}
 		{% if ressource.tags.all %}
 			<b> Tag{{ressource.tags.all.count|pluralize}}: </b> 
 			{% for un_tag in ressource.tags.all %}
-				<i> <a href="?q={{un_tag.nom}}">{{un_tag.nom}}</a></i>,
+				<i> <a href="{{ instance.result_page.get_absolute_url }}?q={{un_tag.nom}}">{{un_tag.nom}}</a></i>,
 			{% endfor %}
 		{% endif %}
 		<b> Type{{ressource.subcats.all.count|pluralize}} de publication: </b>
 		{% for csc in ressource.subcats.all %}
-			{# <i> <a href="?q={{csc.id_categorie.nom}}"> {{csc.id_categorie.nom}}</a>/<a href="?q={{csc.id_sous_cat.nom}}">{{csc.id_sous_cat.nom}}</a></i> #}
-			<i><a href="?q={{csc.nom}}">{{csc.nom}}</a></i>
+			{# <i> <a href="{{ instance.result_page.get_absolute_url }}?q={{csc.id_categorie.nom}}"> {{csc.id_categorie.nom}}</a>/<a href="{{ instance.result_page.get_absolute_url }}?q={{csc.id_sous_cat.nom}}">{{csc.id_sous_cat.nom}}</a></i> #}
+			<i><a href="{{ instance.result_page.get_absolute_url }}?q={{csc.nom}}">{{csc.nom}}</a></i>
 		{% endfor %}
 		{% if user.is_authenticated %} <div class="modif"> <a href="{% url admin:opst_plugins_ressource_change ressource.id %}" target="_blank"> <button> Modifier la ressource </button></a></div> {% endif %}
 		{% if not forloop.last %}<br/><br/>{% endif %}
