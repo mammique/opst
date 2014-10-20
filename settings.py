@@ -185,6 +185,7 @@ INSTALLED_APPS = (
     'opst_plugins',
 #    'haystack',
 #    'cms_search',
+#    'fixture_magic',
 )
 
 THUMBNAIL_PROCESSORS = (
