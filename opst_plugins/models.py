@@ -223,7 +223,7 @@ ressource_year_choices.reverse()
 class Ressource(models.Model):
 
     titre           = models.CharField(db_index=True, max_length=767)
-    slug            = models.SlugField(max_length=767, blank=True)
+    slug            = models.SlugField(unique=True, max_length=255, blank=True)
     texte           = models.TextField(db_index=True, blank=True)
     lien_texte      = models.CharField(max_length=767, blank=True)
     annee           = models.IntegerField(db_index=True, choices=ressource_year_choices)
