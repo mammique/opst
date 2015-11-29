@@ -162,11 +162,19 @@ input[type="password"] {
     margin-bottom: 0;
 }
 
+
 #col-left h1,
-#col-right h1 {
+#col-right h1,
+#col-left h2,
+#col-right h2 {
     color: #6a6361;
     margin: 0;
     padding-bottom: 5px;
+}
+
+#col-left h2,
+#col-right h2 {
+    font-size: 18px;
 }
 
 /* #col-left > *:empty,
