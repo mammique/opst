@@ -367,7 +367,7 @@ class CarouslideRecentPagesPlugin(CMSPluginBase): #InheritPagePlaceholderPlugin)
                     placeholder__slot__iexact='page', #placeholder,
                     parent__isnull=True
                 ).order_by('position').select_related()
-                plugin_output = ['<h1>%s</h1>' % from_page.get_title()]
+                plugin_output = ['<h2>%s</h2>' % from_page.get_title()]
                 template_vars['parent_plugins'] = plugins 
                 for plg in plugins:
                     tmpctx = copy.copy(context)
