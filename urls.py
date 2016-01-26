@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic.simple import direct_to_template
 
-# from cms.sitemaps import CMSSitemap
+from cms.sitemaps import CMSSitemap
 
 admin.autodiscover()
 
@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 	#url(r'^', include('opst_plugins.urls')),
     (r'^robots\.txt$', direct_to_template, {'template': 'robots.txt', 'mimetype': 'text/plain'}),
     url(r'^', include('cms.urls')),
+    url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': {'cmspages': CMSSitemap}})
 )
 urlpatterns += staticfiles_urlpatterns()
 

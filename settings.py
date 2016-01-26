@@ -154,7 +154,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.staticfiles',
-#    'django.contrib.sitemaps',
+    'django.contrib.sitemaps',
     'sortedm2m',
     'cms',
     'menus',

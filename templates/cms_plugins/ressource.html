@@ -5,6 +5,7 @@
 </script>
 
 <div id="search-result">
+    {% FIXME: Beurk beurk breuk, utiliser du CSS. %}
     {% if ressource.texte %}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ ressource.texte }} {% else %} <b> Aucun texte disponible </b> {% endif %}
     <br/><br/><b> Année: </b> 
     <a href="{{ instance.result_page.get_absolute_url }}?q={{ ressource.annee }}">{{ ressource.annee }}</a>,<br/>

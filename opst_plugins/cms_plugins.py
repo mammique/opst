@@ -202,7 +202,11 @@ class RessourcePlugin(CMSPluginBase):
         # Récupération des tags
         tags = ressource.tags.all()
 
-        context.update({'slug': slug, 'ressource': ressource, 'auteurs': auteurs, 'tags': tags, 'instance': instance})
+        context.update({'slug': slug,
+                        'ressource': ressource,
+                        'auteurs': auteurs,
+                        'tags': tags,
+                        'instance': instance})
 
         return context
 
