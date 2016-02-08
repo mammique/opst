@@ -1,22 +1,10 @@
 html {
-    /* background-color: black; */
     height: 100%;
 }
 
 body {
-    width: 80%;
-    min-height: 100%;
-    min-width: 950px;
-    margin-right: auto;
-    margin-left: auto;
-/*    margin-top: 15px; */
-    background-color: white;
-    padding: 0 20px;
-}
-
-body,
-div {
-/*    border: 1px solid black; */
+    font-size: 13px;
+    color: black;
 }
 
 h1,h2,h3,h4,h5,h6,
@@ -26,6 +14,13 @@ h1,h2,h3,h4,h5,h6,
     font-family: geomedium;
     font-weight: bold;
 }
+
+h1 { font-size: 140%; }
+h2 { font-size: 132%; }
+h3 { font-size: 124%; }
+h4 { font-size: 116%; }
+h5 { font-size: 108%; }
+h6 { font-size: 100%; }
 
 a {
     text-decoration: none;
@@ -64,6 +59,17 @@ li {
     cursor: pointer;
 }
 
+.row { margin-top: 16px; }
+.row:first-child { margin-top: 0; }
+
+.col {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.col:first-of-type { padding-left: 0; }
+.col:last-of-type { padding-right: 0; }
+
 #header {
     padding-top: 10px;
     background: transparent url(/static/style/header.png) no-repeat -42px top;
@@ -82,13 +88,8 @@ input[type="password"] {
 
 #home {
     display: block;
-    height: 84px;
+    height: 74px;
     background: transparent url(/static/style/logo_home.png) no-repeat center left;
-}
-
-#main {
-    padding: 16px 0;
-    min-height: 400px;
 }
 
 #menu {
@@ -102,7 +103,7 @@ input[type="password"] {
 #menu ul {
     list-style: none;
     padding: 0;
-    margin: 0;
+/*    margin: 0; */
 }
 
 #menu li {
@@ -150,12 +151,10 @@ input[type="password"] {
     padding: 10px;
 }
 
-#col-left > * {
-    margin-right: 16px;
-}
-
-#col-right > * {
-    margin-left: 16px;
+#col-left > *:last-child,
+#col-right > *:last-child {
+    margin-bottom: 0;
+    padding: 10px;k
 }
 
 #col-left > *:last-child {
@@ -175,12 +174,6 @@ input[type="password"] {
 #col-right h2 {
     font-size: 18px;
 }
-
-/* #col-left > *:empty,
-#col-right > *:empty {
-    display: none;
-} */
-
 
 #cloud {
     text-align: center;
@@ -263,9 +256,8 @@ input[type="password"] {
 }
 
 .carouslide-content {
-/*    width: 80%; */
-    width: 454px;
-    padding: 0 10px;
+    width: 520px;
+    padding: 0;
     overflow: hidden;
 }
 
@@ -275,6 +267,7 @@ input[type="password"] {
     height: inherit;
     overflow: hidden;
     background-color: white;
+    padding: 0 20px;
 }
 
 .carouslide-blur {
@@ -319,6 +312,7 @@ input[type="password"] {
     padding: 7px;
     text-align: center;
     font-size: 85%;
+/*    margin-top: 10px; */
 }
 
 #footer a {

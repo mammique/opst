@@ -9,9 +9,10 @@
     <link rel="icon" type="image/png" href="{% static "style/logo_128.png" %}" />
 	<script src="{% static "js/jquery-1.8.3.min.js" %}"></script>
 	<script src="{% static "js/jquery.jtruncate.js" %}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     {% render_block "css" %}
 {% addtoblock "css" %}
-    <link rel="stylesheet" type="text/css" href="{% static "style/yui3-fonts-reset-grids-base-combo-min.css" %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static "style/bootstrap.min.css" %}" media="all" />
     <link rel="stylesheet" type="text/css" href="{% static "style/style.css" %}" media="all" />
     <link rel="stylesheet" type="text/css" href="{% static "style/stylesheet.css" %}" media="all" />
 	<link rel="stylesheet" href="{% static "style/font-awesome/css/font-awesome.min.css" %}" media="all">
@@ -53,23 +54,23 @@ jQuery(document).ready(function()
     {% cms_toolbar %}
     {% render_block "js" %}
     
-<div id="header">
-    <a id="home" href="/"></a>
-</div>
+<div id="main" class="container">
+    <div id="header" class="row">
+        <a id="home" href="/"></a>
+    </div>
 
-<ul id="menu">
-    {% show_menu 0 0 %}
-</ul>
+    <ul id="menu" class="row">
+        {% show_menu 0 0 %}
+    </ul>
 
-<div id="main">
-    {% block main %}{% endblock %}
-</div>
+{% block main %}{% endblock %}
 
-<div id="footer">
+    <div id="footer" class="row">
 {% pages_with_tags 'footer' order alphabetical as page_list %}
 {% for p in page_list %}
-    <a href="{{ p.get_absolute_url }}">{{ p.get_title }}</a>
+        <a href="{{ p.get_absolute_url }}">{{ p.get_title }}</a>
 {% endfor %}
+    </div>
 </div>
 
 </body>

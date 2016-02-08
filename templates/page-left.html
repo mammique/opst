@@ -4,18 +4,18 @@
 
 {% block main %}
 
-<div class="yui3-g">
+<div class="container">
 
-    <div id="col-left" class="yui3-u-1-5">
+    <div id="col-left" class="col-md-2">
         {% placeholder "left" %}
     </div>
 
-    <div class="yui3-u-3-5 page">
+    <div class="col-md-8 page">
         <h1>{{ request.current_page.get_title }}</h1>
 {% placeholder "page" %}
     </div>
 
-    <div id="col-right" class="yui3-u-1-5">
+    <div id="col-right" class="col-md-2">
         {% placeholder "right" %}
     </div>
 
