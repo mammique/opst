@@ -569,6 +569,11 @@ input[type="password"] {
         min-height: inherit;
     }
 
+    #header {
+        background: transparent url(/static/style/header.png) no-repeat 90px 37px;
+        background-size: 800px;
+    }
+
     #menu li {
         display: none;
         text-align: left;
