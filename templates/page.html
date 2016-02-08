@@ -4,19 +4,20 @@
 
 {% block main %}
 
-<div class="yui3-g">
+<div class="row">
 
-    <div id="col-left" class="yui3-u-1-5">
+    <div id="col-left" class="col col-md-2">
+        <div id="col-left-toggle"><a href="#"></a></div>
 {% show_breadcrumb 1 "breadcrumbs.html" %}
 {% if request.current_page.children.count %}<ul id="page-children">{% show_sub_menu 1 %}</ul>{% endif %}
     </div>
 
-    <div class="yui3-u-3-5 page">
+    <div class="col col-md-8 page">
         <h1>{{ request.current_page.get_title }}</h1>
 {% placeholder "page" %}
     </div>
 
-    <div id="col-right" class="yui3-u-1-5">
+    <div id="col-right" class="col col-md-2">
         {% placeholder "right" %}
     </div>
 

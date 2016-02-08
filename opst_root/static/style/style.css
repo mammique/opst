@@ -43,6 +43,7 @@ li {
     text-align: justify;
     font-family: calibri;
     font-size: 120%;
+    min-height: 400px;
 }
 
 .left {
@@ -127,6 +128,11 @@ input[type="password"] {
     background-color: #ef4123;
 }
 
+#menu #menu-toggle,
+#col-left-toggle {
+    display: none;
+}
+
 #branchmap {
     font-size: 130%;
 }
@@ -177,6 +183,7 @@ input[type="password"] {
 
 #cloud {
     text-align: center;
+    line-height: 130%;
 }
 
 #cloud a {
@@ -545,4 +552,98 @@ input[type="password"] {
 .modif button:hover{
 	border: 1px solid grey;
 	background-color: #DDDDDD;
+}
+
+@media (max-width: 991px) {
+
+    body {
+        padding: 0 10px;
+    }
+
+    .col {
+      padding-right: 0;
+      padding-left: 0;
+    }
+
+    .page {
+        min-height: inherit;
+    }
+
+    #menu li {
+        display: none;
+        text-align: left;
+        margin-left: 0;
+        border-bottom: 1px solid white;
+        border-left: 0;
+    }
+
+    #menu li a {
+        display: block;
+        margin-left: 10px;
+    }
+
+    #menu #menu-toggle {
+        display: block;
+    }
+
+    #menu #menu-toggle,
+    #col-left-toggle {
+        background-color: gray;
+    }
+
+    #menu #menu-toggle:hover,
+    #col-left-toggle:hover {
+        background-color: #ef4123;
+    }
+
+    #menu #menu-toggle a {
+        background: transparent url(/static/style/logo_menu.png) left center no-repeat;
+        height: 32px;
+    }
+
+    #col-left {
+        margin-top: -7px;
+    }
+
+    #col-left > * {
+        display: none;
+    }
+
+    #col-left #col-left-toggle {
+        display: block;
+        padding: 3px 16px;
+    }
+
+    #col-left #col-left-toggle a {
+        display: block;
+        background: transparent url(/static/style/logo_left.png) left center no-repeat;
+        height: 32px;
+    }
+
+    #col-left.expanded #col-left-toggle a {
+        background-image: url(/static/style/logo_left_expanded.png);
+    }
+
+    .col {
+        margin-bottom: 10px;
+    }
+
+    .carouslide-content {
+        width: 380px;
+        padding: 0;
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 320px) {
+
+    #footer a {
+        margin: 0 5px;
+    }
+
+    .carouslide-content {
+        width: 180px;
+        padding: 0;
+        overflow: hidden;
+    }
 }
