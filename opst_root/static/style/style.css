@@ -601,9 +601,16 @@ input[type="password"] {
         background-color: #ef4123;
     }
 
-    #menu #menu-toggle a {
-        background: transparent url(/static/style/logo_menu.png) left center no-repeat;
+    #menu #menu-toggle a,
+    #col-left #col-left-toggle a {
+        background-color: transparent;
+        background-position: left center;
+        background-repeat: no-repeat;
         height: 32px;
+    }
+
+    #menu #menu-toggle a {
+        background-image: url(/static/style/logo_menu.png);
     }
 
     #col-left {
@@ -621,8 +628,7 @@ input[type="password"] {
 
     #col-left #col-left-toggle a {
         display: block;
-        background: transparent url(/static/style/logo_left.png) left center no-repeat;
-        height: 32px;
+        background-image: url(/static/style/logo_left.png);
     }
 
     #col-left.expanded #col-left-toggle a {
